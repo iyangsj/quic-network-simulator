@@ -6,6 +6,9 @@ echo "Setting up routes..."
 # This command makes sure that the endpoints set the checksum on outgoing packets.
 ethtool -K eth0 tx off
 
+# show current IP adresses
+echo "Endpoint's IP addresses: $(hostname -I)"
+
 # this relies on the IPv4 address being first in the "hostname -I" output
 IP=$(hostname -I | cut -f1 -d" ")
 GATEWAY="${IP%.*}.2"
@@ -25,6 +28,10 @@ echo "Endpoint's IPv6 address is $IP"
 ip -d route add fd00:cafe:cafe::/48 via $GATEWAY
 # delete unused route
 ip -d route del $UNNEEDED_ROUTE/64
+
+# show IP routes
+echo "Enpoint's routes:"
+ip route
 
 # create the /logs and the /logs/qlog directory
 mkdir -p /logs/qlog
